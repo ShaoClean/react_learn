@@ -1,0 +1,15 @@
+<%
+const { utils, route, config, modelTypes } = it;
+const { _, pascalCase, require } = utils;
+const apiClassName = pascalCase(route.moduleName);
+const routes = route.routes;
+const dataContracts = _.map(modelTypes, "name");
+%>
+import {get, post} from './http-client'
+<% if (config.httpClientType === config.constants.HTTP_CLIENT.AXIOS) { %> import type { AxiosRequestConfig, AxiosResponse } from "axios"; <% } %>
+
+
+
+<% for (const route of routes) { %>
+  <%~ includeFile('./procedure-call.ejs', { ...it, route }) %>
+<% } %>

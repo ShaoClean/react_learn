@@ -1,0 +1,237 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+      "/": {
+        "get": {
+          "operationId": "AppController_getHello",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "App"
+          ]
+        }
+      },
+      "/single-push": {
+        "post": {
+          "operationId": "SinglePushController_main",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PushInfoDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "\u5355\u6761\u63A8\u9001"
+          ]
+        }
+      },
+      "/project": {
+        "get": {
+          "operationId": "ProjectController_encryptProject",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "\u9879\u76EE"
+          ]
+        }
+      }
+    },
+    "info": {
+      "title": "MtFatherBackend",
+      "description": "Api for mt father",
+      "version": "1.0",
+      "contact": {
+  
+      }
+    },
+    "tags": [],
+    "servers": [],
+    "components": {
+      "schemas": {
+        "CommitsDto": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "timestamp": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "author": {
+              "type": "object"
+            },
+            "added": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "modified": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "removed": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "id",
+            "message",
+            "title",
+            "timestamp",
+            "url",
+            "author",
+            "added",
+            "modified",
+            "removed"
+          ]
+        },
+        "RepositoryDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "homepage": {
+              "type": "string"
+            },
+            "git_http_url": {
+              "type": "string"
+            },
+            "git_ssh_url": {
+              "type": "string"
+            },
+            "visibility_level": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "name",
+            "url",
+            "description",
+            "homepage",
+            "git_http_url",
+            "git_ssh_url",
+            "visibility_level"
+          ]
+        },
+        "PushInfoDto": {
+          "type": "object",
+          "properties": {
+            "object_kind": {
+              "type": "string"
+            },
+            "event_name": {
+              "type": "string"
+            },
+            "before": {
+              "type": "string"
+            },
+            "after": {
+              "type": "string"
+            },
+            "ref": {
+              "type": "string"
+            },
+            "checkout_sha": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "user_id": {
+              "type": "number"
+            },
+            "user_name": {
+              "type": "string"
+            },
+            "user_username": {
+              "type": "string"
+            },
+            "user_email": {
+              "type": "string"
+            },
+            "user_avatar": {
+              "type": "string"
+            },
+            "project_id": {
+              "type": "number"
+            },
+            "project": {
+              "$ref": "#/components/schemas/CommitsDto"
+            },
+            "commits": {
+              "$ref": "#/components/schemas/CommitsDto"
+            },
+            "total_commits_count": {
+              "type": "number"
+            },
+            "push_options": {
+              "type": "object"
+            },
+            "repository": {
+              "$ref": "#/components/schemas/RepositoryDto"
+            }
+          },
+          "required": [
+            "object_kind",
+            "event_name",
+            "before",
+            "after",
+            "ref",
+            "checkout_sha",
+            "message",
+            "user_id",
+            "user_name",
+            "user_username",
+            "user_email",
+            "user_avatar",
+            "project_id",
+            "project",
+            "commits",
+            "total_commits_count",
+            "push_options",
+            "repository"
+          ]
+        }
+      }
+    }
+  }

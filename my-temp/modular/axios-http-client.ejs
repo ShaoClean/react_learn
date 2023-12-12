@@ -1,0 +1,97 @@
+<%
+const { apiConfig, generateResponses, config } = it;
+%>
+
+import axios,{AxiosRequestConfig} from "axios";
+
+let cancel: any = null;
+
+const instance = axios.create({
+  baseURL: 'http://localhost:8080/',
+  timeout: 60 * 10 * 1000,
+  withCredentials: true,
+})
+
+instance.interceptors.request.use(
+    (config: any) => {
+        //拼接请求地址
+        const symbol = config.method === 'post' ? config.data.symbol : config.params.symbol;
+        const origin = config.method === 'post' ? config.data.origin : config.params.origin;
+        config.url = `/${symbol}/${origin}` + config.url;
+        //添加配置对象的取消请求属性
+        if (origin === 'img' && config.data.cmd === 'getOne') {
+            config.cancelToken = new axios.CancelToken(function (c) {
+                // 将c赋值给cancel  c是一个函数
+                cancel = c;
+            });
+        }
+        if (origin === 'enhance' && config.data.cmd === 'decode') {
+            config.cancelToken = new axios.CancelToken(function (c) {
+                // 将c赋值给cancel  c是一个函数
+                cancel = c;
+            });
+        }
+        return config;
+    },
+    err => {
+        return Promise.reject(err);
+    },
+);
+
+//响应拦截
+instance.interceptors.response.use(
+    response => {
+        const res = response.data;
+        if (res.code !== 200) {
+            //请求错误的处理代码
+            console.log('请求出错了');
+            return Promise.reject(res);
+        }
+        //对响应数据的处理
+        return res.data;
+    },
+    err => {
+        return Promise.reject(err);
+    },
+);
+
+//封装get请求
+function get(url: string, params = {}) {
+    return new Promise((resolve, reject) => {
+        instance
+            .get(url, { params: params })
+            .then(response => {
+                resolve(response);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+}
+
+//封装post请求
+function post(url: string, data: object, config?: AxiosRequestConfig<object>) {
+    if (cancel !== null) {
+        cancel(); //不为null，说明还在执行，再次点击，就把上次的那个请求取消
+    }
+    return new Promise((resolve, reject) => {
+        instance
+            .post(url, data, config)
+            .then(response => {
+                resolve(response);
+                // 返回后 就把cancel初始化
+                cancel = null;
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+}
+
+
+const http = {
+  get,
+  post
+};
+
+export default http;

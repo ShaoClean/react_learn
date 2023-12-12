@@ -1,0 +1,63 @@
+<%
+const { apiConfig, generateResponses, config } = it;
+%>
+
+import axios,{AxiosRequestConfig} from "axios";
+
+let cancel: any = null;
+
+const instance = axios.create({
+  baseURL: 'http://localhost:8080/',
+  timeout: 60 * 10 * 1000,
+  withCredentials: true,
+})
+
+instance.interceptors.request.use(
+    (config: any) => {
+        //拼接请求地址
+        const symbol = config.method === 'post' ? config.data.symbol : config.params.symbol;
+        const origin = config.method === 'post' ? config.data.origin : config.params.origin;
+        config.url = `/${symbol}/${origin}` + config.url;
+        //添加配置对象的取消请求属性
+        if (origin === 'img' && config.data.cmd === 'getOne') {
+            config.cancelToken = new axios.CancelToken(function (c) {
+                // 将c赋值给cancel  c是一个函数
+                cancel = c;
+            });
+        }
+        if (origin === 'enhance' && config.data.cmd === 'decode') {
+            config.cancelToken = new axios.CancelToken(function (c) {
+                // 将c赋值给cancel  c是一个函数
+                cancel = c;
+            });
+        }
+        return config;
+    },
+    err => {
+        return Promise.reject(err);
+    },
+);
+
+//响应拦截
+instance.interceptors.response.use(
+    response => {
+        const res = response.data;
+        if (res.code !== 200) {
+            //请求错误的处理代码
+            console.log('请求出错了');
+            return Promise.reject(res);
+        }
+        //对响应数据的处理
+        return res.data;
+    },
+    err => {
+        return Promise.reject(err);
+    },
+);
+
+
+const http = {
+  
+};
+
+export default http;
