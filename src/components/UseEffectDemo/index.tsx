@@ -47,7 +47,7 @@ const UseEffectDemo = () => {
 	}, [otherState]);
 
 	return (
-		<>
+		<div>
 			<p>{count}</p>
 			<button
 				onClick={() => {
@@ -55,7 +55,7 @@ const UseEffectDemo = () => {
 				}}>
 				add
 			</button>
-		</>
+		</div>
 	);
 };
 

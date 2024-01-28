@@ -6,6 +6,9 @@ import MyTreeModel from "tree-model";
 import WsDemo from "./demo/ws";
 import UseEffectDemo from "./components/UseEffectDemo";
 import { useState } from "react";
+import KeepAlive from "./components/KeepAlive/KeepAlive";
+import KeepAliveTransfer from "./components/KeepAlive/KeepAliveTransfer";
+const TestKeepAlive = KeepAliveTransfer(UseEffectDemo, "UseEffectDemo");
 function App() {
 	const [show, setShow] = useState(true);
 	return (
@@ -16,8 +19,7 @@ function App() {
 				}}>
 				show
 			</button>
-
-			{show && <UseEffectDemo />}
+			<KeepAlive>{show ? <TestKeepAlive /> : <>111</>}</KeepAlive>
 		</>
 	);
 }
