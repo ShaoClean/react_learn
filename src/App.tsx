@@ -8,18 +8,17 @@ import UseEffectDemo from "./components/UseEffectDemo";
 import { useState } from "react";
 import KeepAlive from "./components/KeepAlive/KeepAlive";
 import KeepAliveTransfer from "./components/KeepAlive/KeepAliveTransfer";
+import Test from "./components/MyKeepAlive/Test";
+import { useRoutes } from "react-router-dom";
+import { routes } from "./router";
 const TestKeepAlive = KeepAliveTransfer(UseEffectDemo, "UseEffectDemo");
 function App() {
 	const [show, setShow] = useState(true);
+
 	return (
 		<>
-			<button
-				onClick={() => {
-					setShow(!show);
-				}}>
-				show
-			</button>
-			<KeepAlive>{show ? <TestKeepAlive /> : <>111</>}</KeepAlive>
+			{/* <Test /> */}
+			{useRoutes(routes)}
 		</>
 	);
 }

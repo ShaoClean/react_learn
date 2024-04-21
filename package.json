@@ -24,6 +24,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
+    "react-router-dom": "^6.21.3",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.4.1",
     "socket.io-client": "^4.7.4",
     "tree-model": "^1.0.7"
   },

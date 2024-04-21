@@ -1,22 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export const counterSlice = createSlice({
 	name: "counter",
 	initialState: {
-		countInfo: {
-			value: '[[1,1]]'
-		},
+		golbalCount: 1,
 	},
 	reducers: {
-		setValue(state) {
-			const valueObj = JSON.parse(state.countInfo.value)
-			valueObj.push([9,9])
-			state.countInfo = {
-				value:JSON.stringify(valueObj)
-			} 
+		setGlobalCount(state) {
+			state.golbalCount += 1;
+		},
+		setMunalGlobalCount(
+			state,
+			action: PayloadAction<{ munalCount: number }>
+		) {
+			state.golbalCount = action.payload.munalCount + 1;
 		},
 	},
 });
 
-export const {setValue} = counterSlice.actions
+export const { setGlobalCount, setMunalGlobalCount } = counterSlice.actions;
 export default counterSlice.reducer;
